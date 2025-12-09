@@ -12,18 +12,6 @@
 
 ---
 
-## 📸 Application Gallery
-
-| **AI Command Center (Concept)** | **Partner Dashboard** |
-|:-------------------------------------------:|:---------------------------------------:|
-| <img src="images/command_center_concept.png" width="100%"> | <img src="images/dashboard_mockup.png" width="100%"> |
-
-| **Product Chat Agent** | **RAG Knowledge Assistant** |
-|:-------------------------------------------:|:---------------------------------------:|
-| <img src="images/product_chat_ui.png" width="100%"> | <img src="images/rag_qa_interface.png" width="100%"> |
-
----
-
 ## 🎯 Project Overview
 
 This project implements a **Retrieval-Augmented Generation (RAG) Chatbot** using Azure Databricks with a complete CI/CD pipeline. It's designed for TD SYNNEX's **Destination AI Lab** initiative, providing intelligent partner product recommendations for Cisco, HP, and Dell enterprise products across 16 EU countries.
@@ -34,6 +22,18 @@ This project implements a **Retrieval-Augmented Generation (RAG) Chatbot** using
 - ✅ **Accurate** — Grounded in actual product data
 - ✅ **Contextual** — Relevant to the user's specific query
 - ✅ **Up-to-date** — Based on the latest product catalog
+
+---
+
+## 📸 Application Gallery
+
+| **AI Command Center (Concept)** | **Partner Dashboard** |
+|:-------------------------------------------:|:---------------------------------------:|
+| <img src="images/command_center_concept.png" width="100%"> | <img src="images/dashboard_mockup.png" width="100%"> |
+
+| **Product Chat Agent** | **RAG Knowledge Assistant** |
+|:-------------------------------------------:|:---------------------------------------:|
+| <img src="images/product_chat_ui.png" width="100%"> | <img src="images/rag_qa_interface.png" width="100%"> |
 
 ---
 
