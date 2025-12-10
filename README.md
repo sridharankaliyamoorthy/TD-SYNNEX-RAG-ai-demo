@@ -8,7 +8,7 @@
 
 > **🚀 [Live Demo: https://td-synnex-rag-ai-demo.streamlit.app/](https://td-synnex-rag-ai-demo.streamlit.app/)**
 
-> **Version 2.1.0** | Complete MLOps Pipeline for Enterprise Product Intelligence — Advanced RAG Q&A System powered by Azure Databricks
+> **Version 2.1.1** | Complete MLOps Pipeline for Enterprise Product Intelligence — Advanced RAG Q&A System powered by Azure Databricks
 
 ---
 
@@ -22,6 +22,14 @@ This project implements a **Retrieval-Augmented Generation (RAG) Chatbot** using
 - ✅ **Accurate** — Grounded in actual product data
 - ✅ **Contextual** — Relevant to the user's specific query
 - ✅ **Up-to-date** — Based on the latest product catalog
+
+---
+
+## 🎥 Project Review & Demos
+
+| **Streamlit App Demo** | **Workflow Walkthrough** |
+|:----------------------:|:------------------------:|
+| [![Streamlit App Demo](https://img.youtube.com/vi/f2j2jBWtwH4/0.jpg)](https://youtu.be/f2j2jBWtwH4) | [![Workflow Walkthrough](https://img.youtube.com/vi/6PA7GGDacdw/0.jpg)](https://youtu.be/6PA7GGDacdw) |
 
 ---
 
@@ -558,6 +566,7 @@ This architecture mirrors **TD SYNNEX's 100K-partner, 6B CZK portal scale**.
 
 | Version | Date | Changes |
 |---------|------|---------|
+| **2.1.1** | 2025-12-10 | Added project review demos and workflow walkthrough |
 | **2.1.0** | 2025-12-09 | RL/Optimization, Trust & Governance, Agentic Capabilities |
 | **2.0.0** | 2025-12-09 | Enhanced UI, RAG Q&A, detailed architecture |
 | **1.0.0** | 2025-12-09 | Initial release with core RAG pipeline |
@@ -582,5 +591,5 @@ MIT License - feel free to use this for your own projects!
 </p>
 
 <p align="center">
-  <i>TD SYNNEX Production RAG Demo • Destination AI Lab • Enterprise Product Intelligence • Version 2.0.0</i>
+  <i>TD SYNNEX Production RAG Demo • Destination AI Lab • Enterprise Product Intelligence • Version 2.1.1</i>
 </p>
