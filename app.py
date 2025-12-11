@@ -1287,10 +1287,10 @@ def render_rag_qa_tab():
                 for i, doc in enumerate(qa.get('docs', []), 1):
                     content = doc.page_content.strip()
                     
-                    # FIX: Flatten the text to fix the "vertical list" issue. 
-                    # PyPDF2 often extracts tables as many short lines. Grouping them makes it readable.
-                    # We replace newlines with double spaces to separate cells/sentences.
-                    flat_content = content.replace('\n', '  ')
+                    # FIX: Preserve structure but clean up empty lines.
+                    # Flattening lost the table structure. We will keep newlines for readability.
+                    lines = [line.strip() for line in content.split('\n') if line.strip()]
+                    clean_content = '\n'.join(lines)
                     
                     st.markdown(f"""
                     <div style="background: rgba(30, 30, 40, 0.6); padding: 20px; border-radius: 12px; border: 1px solid rgba(102, 126, 234, 0.3); margin-bottom: 20px;">
@@ -1298,7 +1298,7 @@ def render_rag_qa_tab():
                             <span>📄 Source {i}</span>
                             <span style="background: rgba(102, 126, 234, 0.2); font-size: 0.7em; padding: 2px 8px; border-radius: 10px; color: #a0aec0;">Matches</span>
                         </div>
-                        <div style="color: #e2e8f0; line-height: 1.8; font-family: monospace; white-space: pre-wrap;">{flat_content}</div>
+                        <div style="color: #e2e8f0; line-height: 1.6; font-family: monospace; white-space: pre-wrap; font-size: 0.85em;">{clean_content}</div>
                     </div>
                     """, unsafe_allow_html=True)
             
