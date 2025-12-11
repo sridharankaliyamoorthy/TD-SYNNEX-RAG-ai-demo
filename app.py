@@ -1281,52 +1281,26 @@ def render_rag_qa_tab():
                 response_id = qa.get('id', f"rag_resp_{idx}")
                 st.markdown(f"**🧑 You:** {qa['q']}")
                 
-                # 1. GENERATE ANSWER using the retrieved context
-                # We construct a prompt to force the LLM to use our local context
-                context_block = "\n\n".join([d.page_content for d in qa.get('docs', [])])
-                prompt = f"""You are a helpful corporate assistant. Use the provided context below to answer the user's question.
-                If the context contains financial data tables, format them nicely as Markdown tables.
-                Make the answer neat, tidy, and professional.
+                # Display results with flattened text for better readability
+                st.markdown(f"#### 📋 Retrieval Results ({qa['t']})")
                 
-                Context:
-                {context_block[:4000]}
-                
-                Question:
-                {qa['q']}
-                """
-                
-                # Check if we already have a generated answer in history, otherwise generate one (handling simplified re-runs)
-                if 'generated_answer' not in qa:
-                    with st.spinner("🧠 Synthesizing answer from documents..."):
-                        # We use the existing endpoint but hijack it with our prompt
-                        # Note: This relies on the endpoint being a generic instruction-following model
-                        llm_response = query_databricks_endpoint(prompt)
-                        qa['generated_answer'] = llm_response['answer'] if llm_response['success'] else "We found relevant documents but could not generate a summary. Please check the sources below."
-
-                # Display the synthesized answer prominently
-                st.markdown(f"""
-                <div style="background: rgba(30, 30, 40, 0.6); padding: 20px; border-radius: 12px; border: 1px solid rgba(102, 126, 234, 0.3); margin-bottom: 20px;">
-                    <div style="color: #667eea; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
-                        <span>🤖 AI Answer</span>
-                        <span style="background: rgba(102, 126, 234, 0.2); font-size: 0.7em; padding: 2px 8px; border-radius: 10px; color: #a0aec0;">Generative</span>
+                for i, doc in enumerate(qa.get('docs', []), 1):
+                    content = doc.page_content.strip()
+                    
+                    # FIX: Flatten the text to fix the "vertical list" issue. 
+                    # PyPDF2 often extracts tables as many short lines. Grouping them makes it readable.
+                    # We replace newlines with double spaces to separate cells/sentences.
+                    flat_content = content.replace('\n', '  ')
+                    
+                    st.markdown(f"""
+                    <div style="background: rgba(30, 30, 40, 0.6); padding: 20px; border-radius: 12px; border: 1px solid rgba(102, 126, 234, 0.3); margin-bottom: 20px;">
+                        <div style="color: #667eea; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                            <span>📄 Source {i}</span>
+                            <span style="background: rgba(102, 126, 234, 0.2); font-size: 0.7em; padding: 2px 8px; border-radius: 10px; color: #a0aec0;">Matches</span>
+                        </div>
+                        <div style="color: #e2e8f0; line-height: 1.8; font-family: monospace; white-space: pre-wrap;">{flat_content}</div>
                     </div>
-                    <div style="color: #e2e8f0; line-height: 1.6;">
-                        {qa['generated_answer']}
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
-
-                # Display Sources in consistent Expanders (Cleaner UI)
-                with st.expander("📄 View Source Documents (Context)", expanded=False):
-                    for i, doc in enumerate(qa.get('docs', []), 1):
-                        content = doc.page_content.strip()
-                        # Clean empty lines for compact view
-                        lines = [line.strip() for line in content.split('\n') if line.strip()]
-                        content = '\n'.join(lines)
-                        
-                        st.markdown(f"**Source {i}**")
-                        st.code(content, language="text")
-                        st.markdown("---")
+                    """, unsafe_allow_html=True)
             
             # Dynamic example queries based on document content
             st.markdown("---")
