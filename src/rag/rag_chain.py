@@ -413,3 +413,4 @@ if __name__ == "__main__":
     print(f"\nExecution Trace:")
     for trace in response.traces:
         print(f"  - {trace.step}: {trace.duration_ms:.2f}ms")
+

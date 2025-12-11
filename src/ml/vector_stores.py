@@ -421,3 +421,4 @@ if __name__ == "__main__":
         print(f"  {r.rank}. {r.content} (score: {r.score:.3f})")
     
     print(f"\nStore stats: {store.get_stats()}")
+

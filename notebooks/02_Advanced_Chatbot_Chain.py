@@ -304,3 +304,4 @@ Next steps:
 Model: {MODEL_NAME}
 Version: {registered_model.version}
 """)
+

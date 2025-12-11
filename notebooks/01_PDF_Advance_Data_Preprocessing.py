@@ -319,3 +319,4 @@ except Exception as e:
 # MAGIC ✅ Created Vector Search index for production RAG  
 # MAGIC 
 # MAGIC **Next:** Run `02_Advanced_Chatbot_Chain` notebook
+

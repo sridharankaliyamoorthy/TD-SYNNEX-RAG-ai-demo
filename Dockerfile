@@ -35,3 +35,4 @@ ENV PYTHONUNBUFFERED=1 \
 
 # Run Streamlit
 CMD ["streamlit", "run", "main.py", "--server.port=8501", "--server.address=0.0.0.0", "--server.headless=true"]
+

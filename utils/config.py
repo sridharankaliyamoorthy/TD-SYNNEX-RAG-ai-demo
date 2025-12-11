@@ -262,3 +262,4 @@ def validate_config() -> Dict[str, bool]:
 # For testing
 if __name__ == "__main__":
     validate_config()
+

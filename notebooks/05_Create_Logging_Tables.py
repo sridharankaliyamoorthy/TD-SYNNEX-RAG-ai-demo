@@ -218,3 +218,4 @@ print(f"   Feedback records: {spark.sql('SELECT COUNT(*) FROM rag_feedback').col
 print(f"   Document records: {spark.sql('SELECT COUNT(*) FROM uploaded_documents').collect()[0][0]}")
 print(f"   Positive feedback: {spark.sql(\"SELECT COUNT(*) FROM rag_feedback WHERE feedback = 'up'\").collect()[0][0]}")
 print(f"   Negative feedback: {spark.sql(\"SELECT COUNT(*) FROM rag_feedback WHERE feedback = 'down'\").collect()[0][0]}")
+

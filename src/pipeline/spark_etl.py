@@ -377,3 +377,4 @@ if __name__ == "__main__":
     print(f"\nStages:")
     for stage in status.stages:
         print(f"  - {stage.name}: {stage.status} ({stage.duration_ms:.2f}ms)")
+

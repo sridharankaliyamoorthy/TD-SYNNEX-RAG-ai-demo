@@ -301,3 +301,4 @@ if __name__ == "__main__":
     print(f"\nDistillation Metrics:")
     print(f"  Compression: {distillation.compression_ratio}x")
     print(f"  Knowledge transfer: {distillation.knowledge_transfer_efficiency * 100:.1f}%")
+

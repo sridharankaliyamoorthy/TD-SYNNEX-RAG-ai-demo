@@ -209,3 +209,4 @@ if __name__ == "__main__":
     print(catalog.head(10))
     print(f"\nVendor distribution:\n{catalog['vendor'].value_counts()}")
     print(f"\nCategory distribution:\n{catalog['category'].value_counts()}")
+

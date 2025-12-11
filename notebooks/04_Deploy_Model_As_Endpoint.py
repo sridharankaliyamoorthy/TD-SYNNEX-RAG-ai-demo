@@ -291,3 +291,4 @@ print(f"   https://{workspace_url}/ml/endpoints/{ENDPOINT_NAME}/review-app")
 print(f"\n📋 API Endpoint:")
 print(f"   https://{workspace_url}/serving-endpoints/{ENDPOINT_NAME}/invocations")
 print("=" * 60)
+

@@ -640,3 +640,4 @@ MIT License - feel free to use this for your own projects!
 <p align="center">
   <i>TD SYNNEX Production RAG Demo • Destination AI Lab • Enterprise Product Intelligence • Version 2.1.1</i>
 </p>
+

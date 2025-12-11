@@ -568,3 +568,4 @@ if __name__ == "__main__":
     print(f"\nWorkflow Trace:")
     for action in result.actions:
         print(f"  [{action.agent_type.value}] {action.action}: {action.duration_ms:.2f}ms")
+

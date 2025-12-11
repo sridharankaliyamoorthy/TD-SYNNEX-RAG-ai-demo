@@ -274,3 +274,4 @@ if __name__ == "__main__":
     embeddings = engine.encode(texts)
     print(f"Generated embeddings: {embeddings.shape}")
     print(f"Metrics: {engine.get_metrics()}")
+
