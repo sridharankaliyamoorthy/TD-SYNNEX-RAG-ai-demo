@@ -1281,45 +1281,52 @@ def render_rag_qa_tab():
                 response_id = qa.get('id', f"rag_resp_{idx}")
                 st.markdown(f"**🧑 You:** {qa['q']}")
                 
-                # Display answer cards
-                # Display answer context with clean Markdown
-                # Display answer context with premium card design
-                st.markdown(f"#### 📄 Context from Document ({qa['t']})")
+                # 1. GENERATE ANSWER using the retrieved context
+                # We construct a prompt to force the LLM to use our local context
+                context_block = "\n\n".join([d.page_content for d in qa.get('docs', [])])
+                prompt = f"""You are a helpful corporate assistant. Use the provided context below to answer the user's question.
+                If the context contains financial data tables, format them nicely as Markdown tables.
+                Make the answer neat, tidy, and professional.
                 
-                for i, doc in enumerate(qa.get('docs', []), 1):
-                    content = doc.page_content.strip()
-                    
-                    # Final Fix: Strict cleanup to remove all empty lines and gaps
-                    # We will not try to reconstruct tables with pipes as it creates a mess
-                    # Instead, we present a clean, dense vertical list
-                    lines = [line.strip() for line in content.split('\n') if line.strip()]
-                    content = '\n'.join(lines)
-                    
-                    st.markdown(f"**Source {i}**")
-                    st.code(content, language="text")
-                    st.markdown("---")
+                Context:
+                {context_block[:4000]}
                 
-                # Feedback buttons - prominent with labels
-                st.markdown('<div style="margin: 8px 0 20px 0;">', unsafe_allow_html=True)
-                fb_col1, fb_col2, fb_col3 = st.columns([1, 1, 4])
-                with fb_col1:
-                    feedback_given = st.session_state.feedback.get(response_id)
-                    if feedback_given == 'up':
-                        st.success("👍 Helpful!")
-                    elif st.button("👍 Helpful", key=f"rag_up_{idx}_{response_id}", help="This response was helpful"):
-                        st.session_state.feedback[response_id] = 'up'
-                        st.session_state.feedback_counts['up'] += 1
-                        log_feedback_to_delta(response_id, qa['q'], qa['a'][:500], 'up', datetime.now().isoformat())
-                        st.rerun()
-                with fb_col2:
-                    if feedback_given == 'down':
-                        st.warning("👎 Not helpful")
-                    elif st.button("👎 Not Helpful", key=f"rag_down_{idx}_{response_id}", help="This response was not helpful"):
-                        st.session_state.feedback[response_id] = 'down'
-                        st.session_state.feedback_counts['down'] += 1
-                        log_feedback_to_delta(response_id, qa['q'], qa['a'][:500], 'down', datetime.now().isoformat())
-                        st.rerun()
-                st.markdown('</div>', unsafe_allow_html=True)
+                Question:
+                {qa['q']}
+                """
+                
+                # Check if we already have a generated answer in history, otherwise generate one (handling simplified re-runs)
+                if 'generated_answer' not in qa:
+                    with st.spinner("🧠 Synthesizing answer from documents..."):
+                        # We use the existing endpoint but hijack it with our prompt
+                        # Note: This relies on the endpoint being a generic instruction-following model
+                        llm_response = query_databricks_endpoint(prompt)
+                        qa['generated_answer'] = llm_response['answer'] if llm_response['success'] else "We found relevant documents but could not generate a summary. Please check the sources below."
+
+                # Display the synthesized answer prominently
+                st.markdown(f"""
+                <div style="background: rgba(30, 30, 40, 0.6); padding: 20px; border-radius: 12px; border: 1px solid rgba(102, 126, 234, 0.3); margin-bottom: 20px;">
+                    <div style="color: #667eea; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                        <span>🤖 AI Answer</span>
+                        <span style="background: rgba(102, 126, 234, 0.2); font-size: 0.7em; padding: 2px 8px; border-radius: 10px; color: #a0aec0;">Generative</span>
+                    </div>
+                    <div style="color: #e2e8f0; line-height: 1.6;">
+                        {qa['generated_answer']}
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+
+                # Display Sources in consistent Expanders (Cleaner UI)
+                with st.expander("📄 View Source Documents (Context)", expanded=False):
+                    for i, doc in enumerate(qa.get('docs', []), 1):
+                        content = doc.page_content.strip()
+                        # Clean empty lines for compact view
+                        lines = [line.strip() for line in content.split('\n') if line.strip()]
+                        content = '\n'.join(lines)
+                        
+                        st.markdown(f"**Source {i}**")
+                        st.code(content, language="text")
+                        st.markdown("---")
             
             # Dynamic example queries based on document content
             st.markdown("---")
