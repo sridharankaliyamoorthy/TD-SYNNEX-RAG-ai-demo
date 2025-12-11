@@ -138,6 +138,7 @@ The system uses **LangChain's `WebBaseLoader`** to ethically and efficiently ing
 *   **Standard Retrieval**: It performs a standard HTTP GET request (similar to your browser) to fetch the HTML content.
 *   **Parsing**: The HTML is parsed (using `BeautifulSoup` under the hood) to extract readable text, removing boilerplate like navigation bars and footers.
 *   **Chunking**: This text is then standardized, chunked, and embedded just like a PDF or Text file.
+*   **Secure Storage**: All ingested data (chunks, metadata, and embeddings) is securely stored in **Databricks Delta Tables** (`rusefx.rag_schema`) governed by **Unity Catalog**. This ensures full data lineage, versioning, and auditability suitable for enterprise use.
 *   *Note: This ensures we strictly process the specific page provided by the user for context, maintaining compliance and accuracy.*
 
 ### 🛠️ Pipeline Architecture
