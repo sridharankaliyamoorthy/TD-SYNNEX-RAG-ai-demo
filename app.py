@@ -1289,20 +1289,11 @@ def render_rag_qa_tab():
                 for i, doc in enumerate(qa.get('docs', []), 1):
                     content = doc.page_content.strip()
                     
-                    # Heuristic: Reconstruct tables by joining short consecutive lines
+                    # Final Fix: Strict cleanup to remove all empty lines and gaps
+                    # We will not try to reconstruct tables with pipes as it creates a mess
+                    # Instead, we present a clean, dense vertical list
                     lines = [line.strip() for line in content.split('\n') if line.strip()]
-                    reconstructed = []
-                    if lines:
-                        current_row = lines[0]
-                        for next_line in lines[1:]:
-                            # If both lines are short (likely table cells), join them
-                            if len(current_row) < 60 and len(next_line) < 60:
-                                current_row += "   |   " + next_line
-                            else:
-                                reconstructed.append(current_row)
-                                current_row = next_line
-                        reconstructed.append(current_row)
-                        content = '\n'.join(reconstructed)
+                    content = '\n'.join(lines)
                     
                     st.markdown(f"**Source {i}**")
                     st.code(content, language="text")
