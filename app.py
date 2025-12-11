@@ -1287,10 +1287,24 @@ def render_rag_qa_tab():
                 for i, doc in enumerate(qa.get('docs', []), 1):
                     content = doc.page_content.strip()
                     
-                    # FIX: Preserve structure but clean up empty lines.
-                    # Flattening lost the table structure. We will keep newlines for readability.
+                    # FIX: Smart Reflow based on punctuation.
+                    # Table cells (Source 1/2) rarely end in punctuation -> Join them into rows.
+                    # Sentences (Source 3) end in punctuation -> Keep them as new lines.
                     lines = [line.strip() for line in content.split('\n') if line.strip()]
-                    clean_content = '\n'.join(lines)
+                    refined_lines = []
+                    if lines:
+                        current_segment = lines[0]
+                        for next_line in lines[1:]:
+                            # If strictly ends in sentence punctuation, assume end of line.
+                            if current_segment.endswith(('.', ':', '!', '?')):
+                                refined_lines.append(current_segment)
+                                current_segment = next_line
+                            else:
+                                # Otherwise, it's likely a table fragment or wrapped text -> Join
+                                current_segment += "   " + next_line
+                        refined_lines.append(current_segment)
+                    
+                    clean_content = '\n\n'.join(refined_lines)
                     
                     st.markdown(f"""
                     <div style="background: rgba(30, 30, 40, 0.6); padding: 20px; border-radius: 12px; border: 1px solid rgba(102, 126, 234, 0.3); margin-bottom: 20px;">
