@@ -1281,40 +1281,33 @@ def render_rag_qa_tab():
                 response_id = qa.get('id', f"rag_resp_{idx}")
                 st.markdown(f"**🧑 You:** {qa['q']}")
                 
-                # Display results with flattened text for better readability
                 st.markdown(f"#### 📋 Retrieval Results ({qa['t']})")
                 
                 for i, doc in enumerate(qa.get('docs', []), 1):
-                    content = doc.page_content.strip()
+                    # Display results with table-like flattening logic
+                    st.markdown(f"**📄 Source {i} (Extracted Content)**")
                     
-                    # FIX: Smart Reflow based on punctuation.
-                    # Table cells (Source 1/2) rarely end in punctuation -> Join them into rows.
-                    # Sentences (Source 3) end in punctuation -> Keep them as new lines.
+                    content = doc.page_content.strip()
                     lines = [line.strip() for line in content.split('\n') if line.strip()]
+                    
+                    # Layout Fix: Merge short lines to form table rows
                     refined_lines = []
                     if lines:
-                        current_segment = lines[0]
-                        for next_line in lines[1:]:
-                            # If strictly ends in sentence punctuation, assume end of line.
-                            if current_segment.endswith(('.', ':', '!', '?')):
-                                refined_lines.append(current_segment)
-                                current_segment = next_line
+                        curr = lines[0]
+                        for next_l in lines[1:]:
+                            # If both are short (likely table columns), merge them with spacing
+                            if len(curr) < 80 and len(next_l) < 80 and  len(curr) + len(next_l) < 120:
+                                curr += "    " + next_l 
                             else:
-                                # Otherwise, it's likely a table fragment or wrapped text -> Join
-                                current_segment += "   " + next_line
-                        refined_lines.append(current_segment)
+                                refined_lines.append(curr)
+                                curr = next_l
+                        refined_lines.append(curr)
                     
-                    clean_content = '\n\n'.join(refined_lines)
+                    final_content = '\n'.join(refined_lines)
                     
-                    st.markdown(f"""
-                    <div style="background: rgba(30, 30, 40, 0.6); padding: 20px; border-radius: 12px; border: 1px solid rgba(102, 126, 234, 0.3); margin-bottom: 20px;">
-                        <div style="color: #667eea; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
-                            <span>📄 Source {i}</span>
-                            <span style="background: rgba(102, 126, 234, 0.2); font-size: 0.7em; padding: 2px 8px; border-radius: 10px; color: #a0aec0;">Matches</span>
-                        </div>
-                        <div style="color: #e2e8f0; line-height: 1.6; font-family: monospace; white-space: pre-wrap; font-size: 0.85em;">{clean_content}</div>
-                    </div>
-                    """, unsafe_allow_html=True)
+                    # Use an expander to keep the UI "Uncluttered" by default
+                    with st.expander(f"View Details for Source {i}", expanded=True):
+                        st.code(final_content, language="yaml")
             
             # Dynamic example queries based on document content
             st.markdown("---")
