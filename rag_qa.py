@@ -1,11 +1,6 @@
 """
 TD SYNNEX Advanced RAG Q&A System
-Upload documents (PDF, DOCX, TXT) or paste URLs and get AI-powered answers
 
-Based on: https://github.com/balupeddireddy08/Advanced-RAG-Q-A-System
-Integrated with TD SYNNEX RAG Demo
-
-Run with: streamlit run rag_qa.py --server.port=8504
 """
 
 import streamlit as st
@@ -360,9 +355,7 @@ def render_sidebar():
         # Attribution
         st.markdown("---")
         st.markdown("""
-        <div style="text-align: center; font-size: 0.8em; color: #a0aec0;">
-            Based on <a href="https://github.com/balupeddireddy08/Advanced-RAG-Q-A-System" target="_blank">Advanced-RAG-Q-A-System</a>
-        </div>
+        
         """, unsafe_allow_html=True)
 
 

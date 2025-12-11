@@ -1,0 +1,38 @@
+# Version control and artifacts
+.git
+.gitignore
+.dockerignore
+.DS_Store
+
+# Virtual Environments
+venv/
+.venv/
+env/
+__pycache__/
+*.pyc
+
+# Build and Dist
+build/
+dist/
+*.egg-info/
+
+# Dependencies
+node_modules/
+package-lock.json
+
+# Logs
+logs/
+*.log
+
+# Data
+data/
+*.pdf
+*.csv
+*.parquet
+*.db
+
+# Temporary
+tmp/
+temp/
+.cache/
+.pytest_cache/
